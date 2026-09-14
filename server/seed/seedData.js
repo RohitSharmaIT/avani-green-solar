@@ -8,6 +8,7 @@ import { DealerApp, ContractorApp } from '../models/Partner.js';
 import { ContactMessage } from '../models/ContactMessage.js';
 import { Settings } from '../models/Settings.js';
 
+
 export async function seedInitialData() {
   try {
     // 1. Ensure Default Admin exists
