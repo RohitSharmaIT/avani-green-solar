@@ -40,6 +40,8 @@ export default function AdminLayout() {
     { to: '/admin/blog', label: 'Blog', icon: 'doc' },
     { to: '/admin/dealers', label: 'Dealers', icon: 'building', count: dealerApps.length },
     { to: '/admin/contractors', label: 'Contractors', icon: 'wrench', count: contractorApps.length },
+    { to: '/admin/jobs', label: 'Jobs', icon: 'wallet' },
+    { to: '/admin/candidates', label: 'Candidates', icon: 'users' },
     { to: '/admin/messages', label: 'Messages', icon: 'mail', count: contactMessages.length },
     { to: '/admin/settings', label: 'Settings', icon: 'settings' }
   ];

@@ -26,6 +26,7 @@ import ExpertPage from './pages/ExpertPage';
 import SiteVisitPage from './pages/SiteVisitPage';
 import LegalPage from './pages/LegalPage';
 import NotFoundPage from './pages/NotFoundPage';
+import CareersPage from './pages/Careers';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -38,6 +39,8 @@ import AdminDealers from './pages/admin/AdminDealers';
 import AdminContractors from './pages/admin/AdminContractors';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminJobs from './pages/admin/AdminJobs';
+import AdminCandidates from './pages/admin/AdminCandidates';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -76,6 +79,7 @@ export default function App() {
           <Route path="book-site-visit" element={<SiteVisitPage />} />
           <Route path="privacy" element={<LegalPage />} />
           <Route path="terms" element={<LegalPage />} />
+          <Route path="careers" element={<CareersPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 
@@ -91,6 +95,8 @@ export default function App() {
           <Route path="contractors" element={<AdminContractors />} />
           <Route path="messages" element={<AdminMessages />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="jobs" element={<AdminJobs />} />
+          <Route path="candidates" element={<AdminCandidates />} />
         </Route>
       </Routes>
     </>

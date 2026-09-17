@@ -193,6 +193,54 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Partners Section */}
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="wrap" style={{ textAlign: 'center', marginBottom: 36 }}>
+          <div className="eyebrow">Our Trusted Partners</div>
+          <h2 style={{ fontSize: 32 }}>Powered by India's Leading Brands</h2>
+          <p style={{ color: 'var(--ink-soft)', marginTop: 10, fontSize: 15.5, maxWidth: 520, margin: '10px auto 0' }}>
+            We source and install only from India's most reputed solar manufacturers — for quality and reliability you can count on.
+          </p>
+        </div>
+      </section>
+
+      {/* Partners Marquee — seamless infinite scroll */}
+      <section className="marquee-container">
+        {/* .marquee-inner animates; two identical .marquee-track children = seamless -50% loop */}
+        <div className="marquee-inner">
+          {/* Track A */}
+          <div className="marquee-track">
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+          </div>
+          {/* Track B — exact duplicate for seamless join */}
+          <div className="marquee-track">
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+            <img src="/images/partners/partner1.png" alt="UTL Solar" />
+            <img src="/images/partners/partner2.png" alt="Tata Power Solar" />
+            <img src="/images/partners/partner3.png" alt="Adani Power" />
+            <img src="/images/partners/partner4.png" alt="Waaree Solar" />
+          </div>
+        </div>
+      </section>
+
       {/* System Types */}
       <section className="section">
         <div className="wrap">

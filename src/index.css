@@ -22,8 +22,11 @@
   --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  min-width: 0;
 }
 
 html {
@@ -37,9 +40,15 @@ body {
   background: var(--paper);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* Prevent any element from creating horizontal scroll */
+  position: relative;
 }
 
-h1, h2, h3, h4, .disp {
+h1,
+h2,
+h3,
+h4,
+.disp {
   font-family: 'Space Grotesk', sans-serif;
   color: var(--forest);
   margin: 0;
@@ -60,8 +69,11 @@ button {
   outline: none;
 }
 
-img {
+img,
+video,
+svg {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -69,6 +81,13 @@ img {
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding: 0 16px;
+  }
 }
 
 .section {
@@ -188,20 +207,71 @@ img {
   display: inline-block;
 }
 
-.st-NEW { background: #E6EEFB; color: #26497E; }
-.st-CONTACTED { background: #FFF3D6; color: #8A6A0E; }
-.st-SITE_VISIT_PLANNED, .st-SITE_VISIT_COMPLETED { background: #F0E6FB; color: #5A2E8A; }
-.st-QUOTATION_SENT, .st-NEGOTIATION { background: #FDEBD9; color: #9A4B0E; }
-.st-WON { background: #E1F3E4; color: #1D6B32; }
-.st-LOST { background: #FBE4E1; color: #992B1E; }
-.st-APPLIED, .st-UNDER_REVIEW, .st-PENDING { background: #EFEFEF; color: #555; }
-.st-APPROVED, .st-ACTIVE { background: #E1F3E4; color: #1D6B32; }
-.st-REJECTED, .st-SUSPENDED { background: #FBE4E1; color: #992B1E; }
-.st-REQUESTED { background: #E6EEFB; color: #26497E; }
-.st-OPEN { background: #FFF3D6; color: #8A6A0E; }
+.st-NEW {
+  background: #E6EEFB;
+  color: #26497E;
+}
+
+.st-CONTACTED {
+  background: #FFF3D6;
+  color: #8A6A0E;
+}
+
+.st-SITE_VISIT_PLANNED,
+.st-SITE_VISIT_COMPLETED {
+  background: #F0E6FB;
+  color: #5A2E8A;
+}
+
+.st-QUOTATION_SENT,
+.st-NEGOTIATION {
+  background: #FDEBD9;
+  color: #9A4B0E;
+}
+
+.st-WON {
+  background: #E1F3E4;
+  color: #1D6B32;
+}
+
+.st-LOST {
+  background: #FBE4E1;
+  color: #992B1E;
+}
+
+.st-APPLIED,
+.st-UNDER_REVIEW,
+.st-PENDING {
+  background: #EFEFEF;
+  color: #555;
+}
+
+.st-APPROVED,
+.st-ACTIVE {
+  background: #E1F3E4;
+  color: #1D6B32;
+}
+
+.st-REJECTED,
+.st-SUSPENDED {
+  background: #FBE4E1;
+  color: #992B1E;
+}
+
+.st-REQUESTED {
+  background: #E6EEFB;
+  color: #26497E;
+}
+
+.st-OPEN {
+  background: #FFF3D6;
+  color: #8A6A0E;
+}
 
 /* ---- Form Controls ---- */
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 11px 13px;
   border: 1px solid var(--line);
@@ -213,7 +283,9 @@ input, select, textarea {
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--leaf);
   box-shadow: 0 0 0 3px rgba(47, 122, 79, 0.15);
@@ -322,8 +394,8 @@ nav.main {
   gap: 4px;
 }
 
-nav.main > a,
-nav.main > .dd {
+nav.main>a,
+nav.main>.dd {
   padding: 8px 12px;
   font-size: 14px;
   font-weight: 500;
@@ -334,9 +406,9 @@ nav.main > .dd {
   transition: color var(--transition), background var(--transition);
 }
 
-nav.main > a:hover,
-nav.main > a.active,
-.dd > span:hover {
+nav.main>a:hover,
+nav.main>a.active,
+.dd>span:hover {
   color: var(--leaf-dark);
   background: var(--sage);
 }
@@ -346,7 +418,7 @@ nav.main > a.active,
   position: relative;
 }
 
-.dd > span {
+.dd>span {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -407,8 +479,13 @@ nav.main > a.active,
 }
 
 @media (max-width: 1040px) {
-  nav.main { display: none; }
-  .hamburger { display: block; }
+  nav.main {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
 }
 
 #mobileNav {
@@ -696,13 +773,25 @@ footer.site a:hover {
 .modal {
   background: #fff;
   max-width: 580px;
-  width: 100%;
+  width: calc(100% - 32px);
   padding: 32px;
   position: relative;
   margin-bottom: 40px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--line);
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 20px 16px;
+    width: calc(100% - 24px);
+    border-radius: var(--radius);
+  }
+
+  .modal-bg {
+    padding: 20px 12px;
+  }
 }
 
 .modal-close {
@@ -866,12 +955,19 @@ footer.site a:hover {
 .admin-shell {
   display: grid;
   grid-template-columns: 240px 1fr;
-  min-height: calc(100vh - 72px);
+  min-height: 100vh;
+}
+
+@media (max-width: 1100px) {
+  .admin-shell {
+    grid-template-columns: 200px 1fr;
+  }
 }
 
 @media (max-width: 860px) {
   .admin-shell {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
   }
 }
 
@@ -879,6 +975,46 @@ footer.site a:hover {
   background: var(--forest);
   color: #cfe1d6;
   padding: 24px 0;
+}
+
+@media (max-width: 860px) {
+  .admin-side {
+    padding: 12px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .admin-side nav {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0;
+    padding: 0 8px;
+  }
+
+  .admin-side button,
+  .admin-side a {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .admin-side button.active,
+  .admin-side a.active,
+  .admin-side button:hover,
+  .admin-side a:hover {
+    border-left-color: transparent;
+    border-bottom-color: var(--amber);
+  }
+
+  .admin-side .side-title {
+    padding: 8px 16px 12px;
+    font-size: 15px;
+  }
 }
 
 .admin-side .side-title {
@@ -918,6 +1054,39 @@ footer.site a:hover {
 .admin-main {
   padding: 32px;
   background: #FAFBF9;
+  min-width: 0;
+  /* Clip any internal overflow without blocking body scroll */
+  overflow-x: clip;
+}
+
+@media (max-width: 860px) {
+  .admin-main {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-main {
+    padding: 16px 12px;
+  }
+}
+
+/* Scrollable table wrapper — always wrap tables in .table-wrap on mobile */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+/* Auto-scroll any admin table inside admin-main if not in .table-wrap */
+.admin-main > table.admin,
+.admin-main > div > table.admin,
+.admin-main > section > table.admin {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table.admin {
@@ -925,9 +1094,7 @@ table.admin {
   border-collapse: collapse;
   font-size: 13.5px;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
+  min-width: 600px; /* ensures table is scrollable rather than broken */
 }
 
 table.admin th {
@@ -957,16 +1124,199 @@ table.admin tr:hover td {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 ::selection {
   background: var(--amber);
   color: #1B1E1C;
 }
+
+/* ---- Animations ---- */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  70% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ---- Marquee ---- */
+.marquee-container {
+  overflow: hidden;
+  background: #fff;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #fff 60%, transparent);
+}
+
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #fff 60%, transparent);
+}
+
+/* Two tracks: track-a and track-b run identically for seamless infinite loop */
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 0 30px;
+  /* No animation here — the wrapper animates */
+  flex-shrink: 0;
+}
+
+.marquee-inner {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: scroll-marquee 20s linear infinite;
+  will-change: transform;
+}
+
+.marquee-inner:hover {
+  animation-play-state: paused;
+}
+
+.marquee-track img {
+  height: 56px;
+  max-width: 160px;
+  width: auto;
+  object-fit: contain;
+  /* Full color — no grayscale */
+  filter: none;
+  opacity: 1;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  display: block;
+  flex-shrink: 0;
+}
+
+.marquee-track img:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 4px 12px rgba(22, 58, 46, 0.18));
+}
+
+@keyframes scroll-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ---- Generic Grid classes for responsiveness ---- */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 480px) {
+  .grid-cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ---- Section head responsive ---- */
+@media (max-width: 640px) {
+  .section-head h2 {
+    font-size: 26px;
+  }
+
+  .kpi {
+    font-size: 26px;
+  }
+
+  .cell {
+    padding: 20px 16px;
+  }
+
+  .tabs {
+    gap: 0;
+  }
+
+  .tab {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* ---- Admin page headings ---- */
+@media (max-width: 640px) {
+  h1.page-title,
+  .admin-main h2,
+  .admin-main h1 {
+    font-size: 22px;
+  }
+
+  .filter-row {
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+}
+
+/* Marquee fix: container owns its overflow */
