@@ -1,0 +1,9 @@
+.subsidy-calculator-page .card-simple {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .subsidy-calculator-page .wrap {
+    padding-inline: 12px;
+  }
+}

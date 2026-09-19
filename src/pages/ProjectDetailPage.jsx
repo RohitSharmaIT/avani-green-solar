@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import '../stylesheets/frontend/pages/project-detail.css';
 
 export default function ProjectDetailPage() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <section className="section">
+      <section className="section project-detail-page">
         <div className="wrap">
           <div className="empty">
             <h3>Project Not Found</h3>
@@ -77,9 +78,7 @@ export default function ProjectDetailPage() {
 
         <div className="card-simple" style={{ marginBottom: 30 }}>
           <h4 style={{ marginBottom: 12 }}>Installation Overview</h4>
-          <p style={{ color: 'var(--ink-soft)', lineHeight: 1.7, fontSize: '15px', margin: 0 }}>
-            {project.desc}
-          </p>
+          <div className="project-rich-content" dangerouslySetInnerHTML={{ __html: project.desc || '<p>No description provided.</p>' }} />
         </div>
 
         <div className="cta-row">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Disclaimer from '../components/common/Disclaimer';
 import EnquiryFormFields from '../components/common/EnquiryFormFields';
+import '../stylesheets/frontend/pages/solar-calculator.css';
 
 const formatMoney = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
 
@@ -116,7 +117,7 @@ export default function SolarCalculatorPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section solar-calculator-page">
       <div className="wrap" style={{ maxWidth: 840 }}>
         <div className="section-head">
           <div className="eyebrow">Solar calculator</div>

@@ -24,6 +24,18 @@ const blogSchema = new mongoose.Schema(
       required: true,
       default: 'Solar Basics'
     },
+    parentCat: {
+      type: String,
+      default: 'Solar'
+    },
+    childCat: {
+      type: String,
+      default: ''
+    },
+    featured: {
+      type: Boolean,
+      default: false
+    },
     excerpt: {
       type: String,
       required: true
@@ -32,6 +44,8 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    editorialNote: { type: String, default: '' },
+    reminder: { type: String, default: '' },
     image: {
       type: String,
       default: ''

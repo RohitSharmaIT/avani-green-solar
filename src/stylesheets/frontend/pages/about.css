@@ -1,0 +1,9 @@
+.about-page .section-head {
+  max-width: 760px;
+}
+
+@media (max-width: 640px) {
+  .about-page .grid-cards {
+    grid-template-columns: 1fr;
+  }
+}

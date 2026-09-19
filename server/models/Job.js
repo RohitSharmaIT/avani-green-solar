@@ -15,7 +15,11 @@ const jobSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: 'https://via.placeholder.com/300x200?text=Job+Role',
+    default: '',
+  },
+  publicId: {
+    type: String,
+    default: '',
   },
   responsibilities: {
     type: String,
@@ -24,6 +28,14 @@ const jobSchema = new mongoose.Schema({
   requirements: {
     type: String,
     required: true,
+  },
+  editorialNote: {
+    type: String,
+    default: '',
+  },
+  reminder: {
+    type: String,
+    default: '',
   },
   createdAt: {
     type: Date,

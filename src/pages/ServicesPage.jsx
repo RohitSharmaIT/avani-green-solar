@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import ProjectCard from '../components/cards/ProjectCard';
+import '../stylesheets/frontend/pages/services.css';
 
 const SERVICE_DATA = {
   residential: {
@@ -52,7 +53,7 @@ export default function ServicesPage() {
     );
 
     return (
-      <section className="section">
+      <section className="section services-page">
         <div className="wrap">
           <div className="section-head">
             <div className="eyebrow">{d.title} · {t.title}</div>

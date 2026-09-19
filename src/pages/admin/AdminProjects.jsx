@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import '../../stylesheets/frontend/pages/admin-content.css';
 import { api } from '../../services/api';
 import Icon from '../../components/common/Icon';
+import RichContentEditor from '../../components/admin/RichContentEditor';
 
 export default function AdminProjects() {
   const { projects, addProject, deleteProject } = useApp();
@@ -17,6 +19,8 @@ export default function AdminProjects() {
     location: 'Bhopal, MP',
     year: new Date().getFullYear(),
     desc: '',
+    editorialNote: '',
+    reminder: '',
     featured: true,
     image: '',
     publicId: ''
@@ -87,6 +91,8 @@ export default function AdminProjects() {
       location: 'Bhopal, MP',
       year: new Date().getFullYear(),
       desc: '',
+      editorialNote: '',
+      reminder: '',
       featured: true,
       image: '',
       publicId: ''
@@ -100,7 +106,7 @@ export default function AdminProjects() {
   };
 
   return (
-    <div>
+    <div className="admin-content-page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 14 }}>
         <div>
           <h2 style={{ fontSize: '24px', margin: 0 }}>Projects Inventory (MongoDB)</h2>
@@ -335,15 +341,19 @@ export default function AdminProjects() {
                 {errors.location && <div className="err">{errors.location}</div>}
               </div>
 
+              <RichContentEditor
+                label="Project Description / Technical Details"
+                value={formData.desc}
+                onChange={(desc) => setFormData((prev) => ({ ...prev, desc }))}
+                placeholder="Describe panel modules, inverters, structural height, and key benefits..."
+              />
               <div className="field">
-                <label>Project Description / Technical Details</label>
-                <textarea
-                  name="desc"
-                  rows={3}
-                  value={formData.desc}
-                  onChange={handleChange}
-                  placeholder="Describe panel modules, inverters, structural height, and key benefits..."
-                />
+                <label>Editorial Note <span className="admin-field-hint">Internal light-yellow note</span></label>
+                <textarea name="editorialNote" rows={2} value={formData.editorialNote} onChange={handleChange} placeholder="Add an internal project note..." />
+              </div>
+              <div className="field">
+                <label>Reminder <span className="admin-field-hint">Internal light-red reminder</span></label>
+                <textarea name="reminder" rows={2} value={formData.reminder} onChange={handleChange} placeholder="Add a project follow-up reminder..." />
               </div>
 
               <div style={{ marginBottom: 20 }}>

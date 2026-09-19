@@ -5,8 +5,9 @@ export default function ProjectCard({ project }) {
   if (!project) return null;
 
   return (
-    <div className="cell" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div className="cell project-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div
+        className="project-card-media"
         style={{
           aspectRatio: '16/10',
           background: 'linear-gradient(135deg, #163A2E 0%, #2F7A4F 100%)',
@@ -24,6 +25,7 @@ export default function ProjectCard({ project }) {
           <img
             src={project.image}
             alt={project.name}
+            className="project-card-image"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (

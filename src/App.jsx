@@ -27,6 +27,7 @@ import SiteVisitPage from './pages/SiteVisitPage';
 import LegalPage from './pages/LegalPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CareersPage from './pages/Careers';
+import CareerDetailPage from './pages/CareerDetailPage';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -80,6 +81,7 @@ export default function App() {
           <Route path="privacy" element={<LegalPage />} />
           <Route path="terms" element={<LegalPage />} />
           <Route path="careers" element={<CareersPage />} />
+          <Route path="careers/:id" element={<CareerDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

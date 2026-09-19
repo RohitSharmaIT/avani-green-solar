@@ -4,6 +4,7 @@ import Toast from '../common/Toast';
 import Icon from '../common/Icon';
 import { useApp } from '../../context/AppContext';
 import AdminLoginPage from '../../pages/admin/AdminLoginPage';
+import ScrollReveal from '../common/ScrollReveal';
 
 export default function AdminLayout() {
   const {
@@ -123,7 +124,7 @@ export default function AdminLayout() {
       </aside>
 
       <main className="admin-main">
-        <Outlet />
+        <ScrollReveal><Outlet /></ScrollReveal>
       </main>
     </div>
   );

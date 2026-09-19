@@ -21,7 +21,7 @@ async function request(endpoint, options = {}) {
 
   const token = getAuthToken();
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token}`;
   }
 
   // Set Content-Type only if not sending FormData
@@ -123,6 +123,14 @@ export const api = {
       })
   },
 
+  jobs: {
+    getAll: () => request('/jobs'),
+    getById: (id) => request(`/jobs/${id}`),
+    create: (data) => request('/jobs', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id, data) => request(`/jobs/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id) => request(`/jobs/${id}`, { method: 'DELETE' })
+  },
+
   // Leads
   leads: {
     getAll: () => request('/leads'),
@@ -218,5 +226,10 @@ export const api = {
         method: 'PUT',
         body: JSON.stringify(data)
       })
+  },
+
+  // Subsidy rules
+  subsidyRules: {
+    getAll: () => request('/subsidy-rules')
   }
 };

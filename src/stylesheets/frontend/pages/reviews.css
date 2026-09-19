@@ -1,0 +1,9 @@
+.reviews-page .cell-grid {
+  align-items: stretch;
+}
+
+@media (max-width: 640px) {
+  .reviews-page .cell-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

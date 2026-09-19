@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import '../stylesheets/frontend/pages/contact.css';
 import Icon from '../components/common/Icon';
 import SuccessModal from '../components/common/SuccessModal';
 
@@ -50,7 +51,7 @@ export default function ContactPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section contact-page">
       <SuccessModal
         isOpen={showSuccess}
         onClose={() => setShowSuccess(false)}
@@ -109,7 +110,7 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit} className="card-simple" noValidate>
+          <form onSubmit={handleSubmit} className="card-simple contact-form-card" noValidate>
             <h3 style={{ fontSize: '20px', marginBottom: 16 }}>Send us a Message</h3>
 
             <div className={`field ${errors.name ? 'invalid' : ''}`}>

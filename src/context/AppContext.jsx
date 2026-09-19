@@ -1,12 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import {
-  INITIAL_SETTINGS,
-  SUBSIDY_RULES,
-  INITIAL_PROJECTS,
-  INITIAL_REVIEWS,
-  INITIAL_BLOG,
-  INITIAL_LEADS
-} from '../data/initialData';
 import { api, setAuthToken, getAuthToken } from '../services/api';
 
 const AppContext = createContext();
@@ -15,59 +7,26 @@ const uid = () => Math.random().toString(36).slice(2, 9);
 
 export function AppProvider({ children }) {
   const [settings, setSettings] = useState(() => {
-    const saved = localStorage.getItem('ags_settings');
-    return saved ? JSON.parse(saved) : INITIAL_SETTINGS;
+    return {};
   });
 
-  const [leads, setLeads] = useState(() => {
-    const saved = localStorage.getItem('ags_leads');
-    return saved ? JSON.parse(saved) : INITIAL_LEADS;
-  });
+  const [leads, setLeads] = useState([]);
 
-  const [siteVisits, setSiteVisits] = useState(() => {
-    const saved = localStorage.getItem('ags_site_visits');
-    return saved ? JSON.parse(saved) : [
-      { id: 'SV-DEMO01', name: 'Alok Mishra', address: 'Arera Colony, Bhopal', preferredDate: '2026-09-10', preferredTime: '11:00', status: 'REQUESTED' }
-    ];
-  });
+  const [siteVisits, setSiteVisits] = useState([]);
 
-  const [reviews, setReviews] = useState(() => {
-    const saved = localStorage.getItem('ags_reviews');
-    return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
-  });
+  const [reviews, setReviews] = useState([]);
 
-  const [dealerApps, setDealerApps] = useState(() => {
-    const saved = localStorage.getItem('ags_dealers');
-    return saved ? JSON.parse(saved) : [
-      { id: 'DL-90812', name: 'Sunil Verma', city: 'Hoshangabad', phone: '9893012345', status: 'APPLIED', created: new Date().toISOString() }
-    ];
-  });
+  const [dealerApps, setDealerApps] = useState([]);
 
-  const [contractorApps, setContractorApps] = useState(() => {
-    const saved = localStorage.getItem('ags_contractors');
-    return saved ? JSON.parse(saved) : [
-      { id: 'CT-34211', name: 'Mohit Sharma', city: 'Ujjain', phone: '9826054321', status: 'APPLIED', created: new Date().toISOString() }
-    ];
-  });
+  const [contractorApps, setContractorApps] = useState([]);
 
-  const [contactMessages, setContactMessages] = useState(() => {
-    const saved = localStorage.getItem('ags_messages');
-    return saved ? JSON.parse(saved) : [
-      { id: 'msg-1', name: 'Kavita Singh', phone: '9827011223', subject: 'Industrial 100 kW enquiry', message: 'Need quotation for food processing unit near Mandideep.', created: new Date().toISOString() }
-    ];
-  });
+  const [contactMessages, setContactMessages] = useState([]);
 
-  const [projects, setProjects] = useState(() => {
-    const saved = localStorage.getItem('ags_projects');
-    return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
-  });
+  const [projects, setProjects] = useState([]);
 
-  const [blog, setBlog] = useState(() => {
-    const saved = localStorage.getItem('ags_blog');
-    return saved ? JSON.parse(saved) : INITIAL_BLOG;
-  });
+  const [blog, setBlog] = useState([]);
 
-  const [subsidyRules] = useState(SUBSIDY_RULES);
+  const [subsidyRules, setSubsidyRules] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [isDbConnected, setIsDbConnected] = useState(false);
@@ -75,19 +34,8 @@ export function AppProvider({ children }) {
 
   // Admin authentication state
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
-    return Boolean(getAuthToken()) || localStorage.getItem('ags_admin_auth') === 'true';
+    return Boolean(getAuthToken());
   });
-
-  // Local storage cache effects
-  useEffect(() => { localStorage.setItem('ags_settings', JSON.stringify(settings)); }, [settings]);
-  useEffect(() => { localStorage.setItem('ags_leads', JSON.stringify(leads)); }, [leads]);
-  useEffect(() => { localStorage.setItem('ags_site_visits', JSON.stringify(siteVisits)); }, [siteVisits]);
-  useEffect(() => { localStorage.setItem('ags_reviews', JSON.stringify(reviews)); }, [reviews]);
-  useEffect(() => { localStorage.setItem('ags_dealers', JSON.stringify(dealerApps)); }, [dealerApps]);
-  useEffect(() => { localStorage.setItem('ags_contractors', JSON.stringify(contractorApps)); }, [contractorApps]);
-  useEffect(() => { localStorage.setItem('ags_messages', JSON.stringify(contactMessages)); }, [contactMessages]);
-  useEffect(() => { localStorage.setItem('ags_projects', JSON.stringify(projects)); }, [projects]);
-  useEffect(() => { localStorage.setItem('ags_blog', JSON.stringify(blog)); }, [blog]);
 
   const showToast = useCallback((msg) => {
     setToastMessage(msg);
@@ -110,6 +58,7 @@ export function AppProvider({ children }) {
           dealersRes,
           contractorsRes,
           messagesRes,
+          subsidyRulesRes,
           statusRes
         ] = await Promise.allSettled([
           api.settings.get(),
@@ -121,6 +70,7 @@ export function AppProvider({ children }) {
           api.dealers.getAll(),
           api.contractors.getAll(),
           api.contact.getAll(),
+          api.subsidyRules.getAll(),
           api.auth.systemStatus()
         ]);
 
@@ -131,7 +81,7 @@ export function AppProvider({ children }) {
         if (projectsRes.status === 'fulfilled' && Array.isArray(projectsRes.value) && projectsRes.value.length > 0) {
           setProjects(projectsRes.value);
         }
-        if (blogRes.status === 'fulfilled' && Array.isArray(blogRes.value) && blogRes.value.length > 0) {
+        if (blogRes.status === 'fulfilled' && Array.isArray(blogRes.value)) {
           setBlog(blogRes.value);
         }
         if (leadsRes.status === 'fulfilled' && Array.isArray(leadsRes.value)) {
@@ -152,11 +102,14 @@ export function AppProvider({ children }) {
         if (messagesRes.status === 'fulfilled' && Array.isArray(messagesRes.value)) {
           setContactMessages(messagesRes.value);
         }
+        if (subsidyRulesRes.status === 'fulfilled' && Array.isArray(subsidyRulesRes.value)) {
+          setSubsidyRules(subsidyRulesRes.value);
+        }
         if (statusRes.status === 'fulfilled' && statusRes.value) {
           setIsCloudinaryActive(statusRes.value.cloudinaryConfigured);
         }
       } catch (err) {
-        console.info('[AppContext] Connected to local cache mode:', err.message);
+        console.error('[AppContext] Failed to load data from the API:', err.message);
       }
     }
 
@@ -170,19 +123,11 @@ export function AppProvider({ children }) {
       if (res && res.token) {
         setAuthToken(res.token);
         setIsAdminAuthenticated(true);
-        localStorage.setItem('ags_admin_auth', 'true');
         showToast('Welcome back, Admin! (Connected to MongoDB)');
         return true;
       }
     } catch (err) {
-      console.info('[Auth] Server login fallback:', err.message);
-      // Local fallback check for offline dev
-      if (username.trim() === 'Avani122' && password.trim() === 'Avani@2025') {
-        setIsAdminAuthenticated(true);
-        localStorage.setItem('ags_admin_auth', 'true');
-        showToast('Welcome back, Admin! (Offline mode)');
-        return true;
-      }
+      console.error('[Auth] Server login failed:', err.message);
       return false;
     }
     return false;
@@ -191,7 +136,6 @@ export function AppProvider({ children }) {
   const adminLogout = () => {
     setAuthToken(null);
     setIsAdminAuthenticated(false);
-    localStorage.removeItem('ags_admin_auth');
     showToast('Logged out of Admin CRM.');
   };
 
@@ -215,7 +159,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Lead saved to local storage:', e.message);
+      console.error('Lead could not be saved to the API:', e.message);
     }
     return tempLead;
   };
@@ -226,7 +170,7 @@ export function AppProvider({ children }) {
     try {
       await api.leads.update(id, { status });
     } catch (e) {
-      console.warn('Lead status update fallback:', e.message);
+      console.error('Lead status update failed:', e.message);
     }
   };
 
@@ -247,7 +191,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Site visit saved locally:', e.message);
+      console.error('Site visit could not be saved to the API:', e.message);
     }
     return tempVisit;
   };
@@ -269,7 +213,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Dealer app saved locally:', e.message);
+      console.error('Dealer application could not be saved to the API:', e.message);
     }
     return tempApp;
   };
@@ -280,7 +224,7 @@ export function AppProvider({ children }) {
     try {
       await api.dealers.update(id, { status });
     } catch (e) {
-      console.warn('Dealer update local:', e.message);
+      console.error('Dealer update failed:', e.message);
     }
   };
 
@@ -301,7 +245,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Contractor app saved locally:', e.message);
+      console.error('Contractor application could not be saved to the API:', e.message);
     }
     return tempApp;
   };
@@ -312,7 +256,7 @@ export function AppProvider({ children }) {
     try {
       await api.contractors.update(id, { status });
     } catch (e) {
-      console.warn('Contractor update local:', e.message);
+      console.error('Contractor update failed:', e.message);
     }
   };
 
@@ -334,7 +278,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Review saved locally:', e.message);
+      console.error('Review could not be saved to the API:', e.message);
     }
     return tempRev;
   };
@@ -345,7 +289,7 @@ export function AppProvider({ children }) {
     try {
       await api.reviews.updateStatus(id, 'APPROVED');
     } catch (e) {
-      console.warn('Review status update local:', e.message);
+      console.error('Review status update failed:', e.message);
     }
   };
 
@@ -355,7 +299,7 @@ export function AppProvider({ children }) {
     try {
       await api.reviews.delete(id);
     } catch (e) {
-      console.warn('Review delete local:', e.message);
+      console.error('Review delete failed:', e.message);
     }
   };
 
@@ -377,7 +321,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Project saved locally:', e.message);
+      console.error('Project could not be saved to the API:', e.message);
     }
     return tempProject;
   };
@@ -413,9 +357,11 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Blog saved locally:', e.message);
+      console.error('Blog post could not be saved to the API:', e.message);
+      setBlog((prev) => prev.filter((b) => b.id !== tempPost.id));
+      showToast(`Article could not be published: ${e.message}`);
+      throw e;
     }
-    return tempPost;
   };
 
   const deleteBlogPost = async (id) => {
@@ -445,7 +391,7 @@ export function AppProvider({ children }) {
         return saved;
       }
     } catch (e) {
-      console.warn('Message saved locally:', e.message);
+      console.error('Message could not be saved to the API:', e.message);
     }
     return tempMsg;
   };
@@ -456,7 +402,7 @@ export function AppProvider({ children }) {
     try {
       await api.settings.update(newSettings);
     } catch (e) {
-      console.warn('Settings saved locally:', e.message);
+      console.error('Settings update failed:', e.message);
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import '../stylesheets/frontend/pages/subsidy-calculator.css';
 import Disclaimer from '../components/common/Disclaimer';
 import EnquiryFormFields from '../components/common/EnquiryFormFields';
 
@@ -116,7 +117,7 @@ export default function SubsidyCalculatorPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section subsidy-calculator-page">
       <div className="wrap" style={{ maxWidth: 840 }}>
         <div className="section-head">
           <div className="eyebrow">Subsidy calculator</div>
