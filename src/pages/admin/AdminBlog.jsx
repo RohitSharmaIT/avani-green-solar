@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import '../../stylesheets/frontend/pages/admin-content.css';
 import { api } from '../../services/api';
 import Icon from '../../components/common/Icon';
+import RichContentEditor from '../../components/admin/RichContentEditor';
 
 export default function AdminBlog() {
   const { blog, addBlogPost, deleteBlogPost } = useApp();
@@ -13,8 +15,13 @@ export default function AdminBlog() {
   const [formData, setFormData] = useState({
     title: '',
     cat: 'Solar Basics',
+    parentCat: 'Solar',
+    childCat: '',
+    featured: false,
     excerpt: '',
     content: '',
+    editorialNote: '',
+    reminder: '',
     image: '',
     publicId: ''
   });
@@ -59,7 +66,7 @@ export default function AdminBlog() {
     setFormData((prev) => ({ ...prev, image: '', publicId: '' }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = {};
     if (!formData.title.trim()) errs.title = 'Please enter an article title.';
@@ -71,16 +78,25 @@ export default function AdminBlog() {
       return;
     }
 
-    addBlogPost(formData);
-    setShowModal(false);
-    setFormData({
-      title: '',
-      cat: 'Solar Basics',
-      excerpt: '',
-      content: '',
-      image: '',
-      publicId: ''
-    });
+    try {
+      await addBlogPost(formData);
+      setShowModal(false);
+      setFormData({
+        title: '',
+        cat: 'Solar Basics',
+        parentCat: 'Solar',
+        childCat: '',
+        featured: false,
+        excerpt: '',
+        content: '',
+        editorialNote: '',
+        reminder: '',
+        image: '',
+        publicId: ''
+      });
+    } catch (err) {
+      setErrors((prev) => ({ ...prev, submit: err.message || 'Unable to publish this article.' }));
+    }
   };
 
   const handleDelete = (id, title) => {
@@ -90,7 +106,7 @@ export default function AdminBlog() {
   };
 
   return (
-    <div>
+    <div className="admin-content-page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 14 }}>
         <div>
           <h2 style={{ fontSize: '24px', margin: 0 }}>Blog &amp; Knowledge Content (MongoDB)</h2>
@@ -195,6 +211,7 @@ export default function AdminBlog() {
             </p>
 
             <form onSubmit={handleSubmit} noValidate>
+              {errors.submit && <div className="err admin-blog-submit-error">{errors.submit}</div>}
               {/* Cloudinary Cover Image */}
               <div className="field" style={{ marginBottom: 18 }}>
                 <label style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -263,15 +280,41 @@ export default function AdminBlog() {
               </div>
 
               <div className="field">
-                <label className="req">Category</label>
-                <select name="cat" value={formData.cat} onChange={handleChange}>
-                  <option value="Solar Basics">Solar Basics</option>
-                  <option value="PM Surya Ghar">PM Surya Ghar</option>
-                  <option value="Solar Maintenance">Solar Maintenance</option>
-                  <option value="Commercial Solar">Commercial Solar</option>
-                  <option value="Policy & Subsidies">Policy &amp; Subsidies</option>
+                <label className="req">Parent Category</label>
+                <select name="parentCat" value={formData.parentCat} onChange={handleChange}>
+                  <option value="Solar">Solar</option>
+                  <option value="Business">Business</option>
+                  <option value="Policy">Policy</option>
+                  <option value="Technology">Technology</option>
                 </select>
               </div>
+
+              <div className="field">
+                <label className="req">Child Category</label>
+                <input
+                  name="childCat"
+                  value={formData.childCat}
+                  onChange={(event) => {
+                    const childCat = event.target.value;
+                    setFormData((prev) => ({ ...prev, childCat, cat: childCat || prev.parentCat }));
+                  }}
+                  placeholder="e.g. Solar Basics, Rooftop Solar, Subsidies"
+                  required
+                />
+              </div>
+
+              <label className="admin-featured-toggle">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  checked={formData.featured}
+                  onChange={(event) => setFormData((prev) => ({ ...prev, featured: event.target.checked }))}
+                />
+                <span>
+                  <strong>Make this a featured blog</strong>
+                  <small>Featured articles appear first on the blog page.</small>
+                </span>
+              </label>
 
               <div className={`field ${errors.excerpt ? 'invalid' : ''}`}>
                 <label className="req">Short Summary / Excerpt</label>
@@ -286,17 +329,24 @@ export default function AdminBlog() {
                 {errors.excerpt && <div className="err">{errors.excerpt}</div>}
               </div>
 
-              <div className={`field ${errors.content ? 'invalid' : ''}`}>
-                <label className="req">Full Article Content</label>
-                <textarea
-                  name="content"
-                  rows={6}
+              <div className={errors.content ? 'invalid' : ''}>
+                <RichContentEditor
+                  label="Full Article Content"
                   value={formData.content}
-                  onChange={handleChange}
+                  onChange={(content) => setFormData((prev) => ({ ...prev, content }))}
                   placeholder="Write the full body content for this article..."
                   required
                 />
                 {errors.content && <div className="err">{errors.content}</div>}
+              </div>
+
+              <div className="field">
+                <label>Editorial Note <span className="admin-field-hint">Internal light-yellow note</span></label>
+                <textarea name="editorialNote" rows={2} value={formData.editorialNote} onChange={handleChange} placeholder="Add an internal note for your content team..." />
+              </div>
+              <div className="field">
+                <label>Reminder <span className="admin-field-hint">Internal light-red reminder</span></label>
+                <textarea name="reminder" rows={2} value={formData.reminder} onChange={handleChange} placeholder="Add a follow-up reminder..." />
               </div>
 
               <div className="cta-row" style={{ marginTop: 16 }}>

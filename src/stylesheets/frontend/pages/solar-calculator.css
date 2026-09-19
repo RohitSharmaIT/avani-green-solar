@@ -1,0 +1,10 @@
+.solar-calculator-page .wrap {
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .solar-calculator-page .wrap {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+}

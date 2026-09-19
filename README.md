@@ -1,16 +1,37 @@
-# React + Vite
+# Avani Green Solar
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Avani Green Solar is a React/Vite frontend backed by an Express/MongoDB API.
 
-Currently, two official plugins are available:
+## Project structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```text
+src/
+  components/       Reusable React UI
+  context/          Frontend state and API orchestration
+  pages/            Public and admin screens
+  services/         Frontend API client
+  stylesheets/
+    frontend/       Global and page-scoped frontend CSS
+server/
+  config/           Database and external-service configuration
+  middleware/       Express middleware
+  models/           MongoDB/Mongoose models
+  routes/           API route handlers
+  seed/             Database seed data
+```
 
-## React Compiler
+All business data is read from MongoDB through `/api` endpoints. The frontend does
+not use demo records or localStorage as a data store; localStorage is used only
+for the JWT authentication token.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Development
 
-## Expanding the Oxlint configuration
+Create `.env` from `.env.example`, configure `MONGODB_URI`, then run:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+npm install
+npm run dev
+```
+
+The Vite development server runs the frontend and proxies `/api` requests to the
+Express server on port 5000.

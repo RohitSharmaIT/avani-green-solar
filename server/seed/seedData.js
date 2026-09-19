@@ -7,6 +7,7 @@ import { SiteVisit } from '../models/SiteVisit.js';
 import { DealerApp, ContractorApp } from '../models/Partner.js';
 import { ContactMessage } from '../models/ContactMessage.js';
 import { Settings } from '../models/Settings.js';
+import { SubsidyRule } from '../models/SubsidyRule.js';
 
 
 export async function seedInitialData() {
@@ -44,7 +45,59 @@ export async function seedInitialData() {
       });
     }
 
-    // 3. Ensure Projects exist
+    // 3. Ensure subsidy rules exist
+    const subsidyRuleCount = await SubsidyRule.countDocuments();
+    if (subsidyRuleCount === 0) {
+      await SubsidyRule.insertMany([
+        {
+          customId: 'r1',
+          scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
+          state: 'All India',
+          customerType: 'Residential',
+          min: 0,
+          max: 2,
+          type: 'flat_per_kw',
+          value: 30000,
+          cap: 30000
+        },
+        {
+          customId: 'r2',
+          scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
+          state: 'All India',
+          customerType: 'Residential',
+          min: 2,
+          max: 3,
+          type: 'flat_per_kw_additional',
+          value: 18000,
+          cap: 78000
+        },
+        {
+          customId: 'r3',
+          scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
+          state: 'All India',
+          customerType: 'Residential',
+          min: 3,
+          max: 10,
+          type: 'capped',
+          value: 0,
+          cap: 78000
+        },
+        {
+          customId: 'r4',
+          scheme: 'State/Commercial Incentive (placeholder — configure)',
+          state: 'Madhya Pradesh',
+          customerType: 'Commercial',
+          min: 0,
+          max: 500,
+          type: 'none_configured',
+          value: 0,
+          cap: 0
+        }
+      ]);
+      console.log('[Seed] Subsidy rules seeded.');
+    }
+
+    // 4. Ensure Projects exist
     const projectCount = await Project.countDocuments();
     if (projectCount === 0) {
       console.log('[Seed] Seeding initial solar projects into MongoDB...');

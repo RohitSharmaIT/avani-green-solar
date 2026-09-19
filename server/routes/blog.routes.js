@@ -1,13 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { Blog } from '../models/Blog.js';
+import { deleteFromCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
 
 // GET /api/blog - list all blog articles
 router.get('/', async (req, res) => {
   try {
-    const articles = await Blog.find().sort({ date: -1, createdAt: -1 });
+    const articles = await Blog.find().sort({ featured: -1, date: -1, createdAt: -1 });
     res.json(articles);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving blog posts', error: err.message });
@@ -37,7 +38,7 @@ router.get('/:slug', async (req, res) => {
 // POST /api/blog - add new blog article
 router.post('/', async (req, res) => {
   try {
-    const { title, cat, excerpt, content, image, publicId, slug: customSlug } = req.body;
+    const { title, cat, parentCat, childCat, featured, excerpt, content, editorialNote, reminder, image, publicId, slug: customSlug } = req.body;
     if (!title || !excerpt || !content) {
       return res.status(400).json({ message: 'Title, excerpt, and content are required.' });
     }
@@ -62,6 +63,11 @@ router.post('/', async (req, res) => {
       title,
       slug: finalSlug,
       cat: cat || 'Solar Basics',
+      parentCat: parentCat || 'Solar',
+      childCat: childCat || '',
+      featured: Boolean(featured),
+      editorialNote: editorialNote || '',
+      reminder: reminder || '',
       excerpt,
       content,
       image: image || '',
@@ -85,9 +91,11 @@ router.put('/:id', async (req, res) => {
       query.$or.push({ _id: id });
     }
 
-    const updated = await Blog.findOneAndUpdate(query, req.body, { new: true });
-    if (!updated) {
-      return res.status(404).json({ message: 'Article not found' });
+    const existing = await Blog.findOne(query);
+    if (!existing) return res.status(404).json({ message: 'Article not found' });
+    const updated = await Blog.findOneAndUpdate(query, req.body, { new: true, runValidators: true });
+    if (existing.publicId && existing.publicId !== (req.body.publicId || existing.publicId)) {
+      await deleteFromCloudinary(existing.publicId);
     }
     res.json(updated);
   } catch (err) {
@@ -108,6 +116,7 @@ router.delete('/:id', async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ message: 'Article not found' });
     }
+    if (deleted.publicId) await deleteFromCloudinary(deleted.publicId);
     res.json({ success: true, message: 'Article deleted successfully.' });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting blog post', error: err.message });

@@ -36,7 +36,7 @@ export default function Header() {
           <NavLink to="/subsidy-calculator" className={({ isActive }) => (isActive ? 'active' : '')}>Subsidy Calculator</NavLink>
           <NavLink to="/blog" className={({ isActive }) => (isActive ? 'active' : '')}>Blog</NavLink>
           <NavLink to="/dealer" className={({ isActive }) => (isActive ? 'active' : '')}>Dealer</NavLink>
-          <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active' : '')}>Contact</NavLink>
+          <NavLink to="/careers" className={({ isActive }) => (isActive ? 'active' : '')}>Careers</NavLink>
         </nav>
 
         <div className="head-cta">
@@ -65,10 +65,9 @@ export default function Header() {
         <Link to="/reviews" onClick={closeMobile}>Customer Reviews</Link>
         <Link to="/blog" onClick={closeMobile}>Blog & Knowledge</Link>
         <Link to="/dealer" onClick={closeMobile}>Dealer Network</Link>
-        <Link to="/contact" onClick={closeMobile}>Contact Us</Link>
+        <Link to="/careers" onClick={closeMobile}>Careers</Link>
         <Link to="/talk-to-solar-expert" onClick={closeMobile} style={{ color: 'var(--leaf-dark)', fontWeight: 600 }}>Talk to Solar Expert</Link>
       </div>
     </header>
   );
 }
-

@@ -5,6 +5,7 @@ import Footer from '../common/Footer';
 import EnquiryModal from '../common/EnquiryModal';
 import Toast from '../common/Toast';
 import FloatingWhatsApp from '../common/FloatingWhatsApp';
+import ScrollReveal from '../common/ScrollReveal';
 
 export default function MainLayout() {
   return (
@@ -12,7 +13,7 @@ export default function MainLayout() {
       <Toast />
       <Header />
       <main style={{ flex: 1 }}>
-        <Outlet />
+        <ScrollReveal><Outlet /></ScrollReveal>
       </main>
       <Footer />
       <EnquiryModal />

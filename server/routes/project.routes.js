@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { Project } from '../models/Project.js';
+import { deleteFromCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/projects - add new project (admin)
 router.post('/', async (req, res) => {
   try {
-    const { name, type, solarType, capacity, location, year, desc, featured, image, publicId } = req.body;
+    const { name, type, solarType, capacity, location, year, desc, featured, editorialNote, reminder, image, publicId } = req.body;
     if (!name || !location || !capacity) {
       return res.status(400).json({ message: 'Name, location, and capacity are required.' });
     }
@@ -51,6 +52,8 @@ router.post('/', async (req, res) => {
       location,
       year: Number(year) || new Date().getFullYear(),
       desc: desc || '',
+      editorialNote: editorialNote || '',
+      reminder: reminder || '',
       featured: Boolean(featured),
       image: image || '',
       publicId: publicId || ''
@@ -72,9 +75,11 @@ router.put('/:id', async (req, res) => {
       query = { $or: [{ customId: id }, { _id: id }] };
     }
 
-    const updated = await Project.findOneAndUpdate(query, req.body, { new: true });
-    if (!updated) {
-      return res.status(404).json({ message: 'Project not found' });
+    const existing = await Project.findOne(query);
+    if (!existing) return res.status(404).json({ message: 'Project not found' });
+    const updated = await Project.findOneAndUpdate(query, req.body, { new: true, runValidators: true });
+    if (existing.publicId && existing.publicId !== (req.body.publicId || existing.publicId)) {
+      await deleteFromCloudinary(existing.publicId);
     }
     res.json(updated);
   } catch (err) {
@@ -95,6 +100,7 @@ router.delete('/:id', async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ message: 'Project not found' });
     }
+    if (deleted.publicId) await deleteFromCloudinary(deleted.publicId);
     res.json({ success: true, message: 'Project deleted successfully.' });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting project', error: err.message });

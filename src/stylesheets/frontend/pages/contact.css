@@ -1,0 +1,23 @@
+.contact-page .wrap {
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .contact-page .wrap {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .contact-page .card-simple {
+    padding: 18px 16px;
+  }
+
+  .contact-page .contact-form-card {
+    min-height: auto;
+    height: auto;
+  }
+
+  .contact-page iframe {
+    height: 260px;
+  }
+}

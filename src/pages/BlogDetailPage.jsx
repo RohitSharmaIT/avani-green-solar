@@ -2,16 +2,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
+import '../stylesheets/frontend/pages/blog-detail.css';
+import { api } from '../services/api';
 
 export default function BlogDetailPage() {
   const { slug } = useParams();
   const { blog } = useApp();
+  const [loadedArticle, setLoadedArticle] = useState(null);
+  const [loadingArticle, setLoadingArticle] = useState(false);
   const [sidebarTab, setSidebarTab] = useState('recent');
   const [isSticky, setIsSticky] = useState(false);
   const sidebarRef = useRef(null);
   const contentRef = useRef(null);
 
-  const article = blog.find((b) => b.slug === slug);
+  const article = blog.find((b) => b.slug === slug) || loadedArticle;
+
+  useEffect(() => {
+    if (article || !slug) return;
+    setLoadingArticle(true);
+    api.blog.getBySlug(slug)
+      .then(setLoadedArticle)
+      .catch(() => setLoadedArticle(null))
+      .finally(() => setLoadingArticle(false));
+  }, [article, slug]);
 
   // Sticky sidebar logic
   useEffect(() => {
@@ -24,6 +37,10 @@ export default function BlogDetailPage() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (loadingArticle) {
+    return <section className="section"><div className="wrap"><div className="empty">Loading article...</div></div></section>;
+  }
 
   if (!article) {
     return (
@@ -70,7 +87,7 @@ export default function BlogDetailPage() {
   const currentItems = sidebarItems[sidebarTab] || [];
 
   return (
-    <div>
+    <div className="blog-detail-page">
       {/* Hero banner */}
       <div
         style={{
@@ -182,7 +199,7 @@ export default function BlogDetailPage() {
                 boxShadow: '0 2px 12px rgba(22,58,46,0.05)'
               }}
             >
-              <p>{article.content}</p>
+              <div className="blog-rich-content" dangerouslySetInnerHTML={{ __html: article.content }} />
               <p style={{ marginTop: 20, color: 'var(--ink-soft)', borderTop: '1px solid var(--line-light)', paddingTop: 20 }}>
                 Solar technology continues to advance rapidly, reducing levelized cost of energy (LCOE) while increasing panel efficiency. For tailored project sizing or engineering consultation regarding this topic, feel free to get in touch with our team.
               </p>

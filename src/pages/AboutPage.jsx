@@ -2,6 +2,7 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import Icon from '../components/common/Icon';
+import '../stylesheets/frontend/pages/about.css';
 
 export default function AboutPage() {
   const { settings } = useApp();
@@ -67,7 +68,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div>
+    <div className="about-page">
       {/* Hero Header Section */}
       <section className="section" style={{ paddingBottom: 36 }}>
         <div className="wrap">

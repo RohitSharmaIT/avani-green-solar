@@ -42,6 +42,8 @@ const projectSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    editorialNote: { type: String, default: '' },
+    reminder: { type: String, default: '' },
     featured: {
       type: Boolean,
       default: false
