@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import '../../stylesheets/frontend/pages/admin.css';
 
 export default function AdminDashboard() {
   const { leads, siteVisits, reviews, dealerApps, contractorApps, contactMessages } = useApp();
@@ -20,7 +21,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div>
+    <div className="admin-page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h2 style={{ fontSize: '24px' }}>CRM Dashboard</h2>

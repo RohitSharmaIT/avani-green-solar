@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import '../stylesheets/frontend/pages/subsidy-calculator.css';
 import Disclaimer from '../components/common/Disclaimer';
 import EnquiryFormFields from '../components/common/EnquiryFormFields';
 
@@ -11,6 +12,7 @@ export default function SubsidyCalculatorPage() {
   const [inputs, setInputs] = useState({
     state: settings.defaultState,
     type: 'Residential',
+    solarType: 'On-grid',
     capacity: 3,
     bill: ''
   });
@@ -42,18 +44,18 @@ export default function SubsidyCalculatorPage() {
     const type = inputs.type;
     const cap = Number(inputs.capacity || 0);
     const systemCost = cap * Number(settings.costPerKw || 55000);
+    const isEligible = type === 'Residential' && inputs.solarType === 'On-grid';
 
     let subsidy = 0;
-    let schemeUsed = 'None configured for this category yet';
+    let schemeUsed = isEligible ? 'PM Surya Ghar (Muft Bijli Yojana)' : 'Not applicable for this selection';
 
-    if (type === 'Residential') {
-      schemeUsed = 'PM Surya Ghar (Muft Bijli Yojana)';
+    if (isEligible) {
       if (cap <= 2) {
         subsidy = cap * 15000;
-      } else if (cap <= 3) {
+      } else if (cap < 3) {
         subsidy = 30000 + (cap - 2) * 18000;
       } else {
-        subsidy = 78000; // standard cap for >= 3 kW
+        subsidy = 78000;
       }
     }
 
@@ -65,14 +67,16 @@ export default function SubsidyCalculatorPage() {
       systemCost,
       subsidy,
       contribution,
-      schemeUsed
+      schemeUsed,
+      isEligible
     };
 
     setSubsidyResult(calculated);
     setLeadForm((prev) => ({
       ...prev,
       capacity: String(cap),
-      customerType: type
+      customerType: type,
+      solarType: inputs.solarType
     }));
   };
 
@@ -116,7 +120,7 @@ export default function SubsidyCalculatorPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section subsidy-calculator-page">
       <div className="wrap" style={{ maxWidth: 840 }}>
         <div className="section-head">
           <div className="eyebrow">Subsidy calculator</div>
@@ -165,6 +169,20 @@ export default function SubsidyCalculatorPage() {
               </div>
 
               <div className="field">
+                <label className="req">Solar type</label>
+                <select
+                  name="solarType"
+                  value={inputs.solarType}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="On-grid">On-grid</option>
+                  <option value="Off-grid">Off-grid</option>
+                  <option value="Hybrid">Hybrid</option>
+                </select>
+              </div>
+
+              <div className="field">
                 <label>Monthly electricity bill (₹, optional)</label>
                 <input
                   name="bill"
@@ -196,8 +214,16 @@ export default function SubsidyCalculatorPage() {
                 </div>
                 <div className="cell">
                   <div style={{ fontSize: '12px', color: 'var(--ink-soft)' }}>Estimated government subsidy</div>
-                  <div className="kpi" style={{ color: 'var(--leaf-dark)' }}>{formatMoney(subsidyResult.subsidy)}</div>
+                  <div className="kpi" style={{ color: 'var(--leaf-dark)' }}>
+                    {subsidyResult.isEligible ? formatMoney(subsidyResult.subsidy) : 'Not applicable'}
+                  </div>
                 </div>
+
+                {!subsidyResult.isEligible && (
+                  <div className="subsidy-notice">
+                    The PM Surya Ghar subsidy is currently available only for Residential On-grid solar systems.
+                  </div>
+                )}
                 <div className="cell">
                   <div style={{ fontSize: '12px', color: 'var(--ink-soft)' }}>Estimated net customer share</div>
                   <div className="kpi">{formatMoney(subsidyResult.contribution)}</div>

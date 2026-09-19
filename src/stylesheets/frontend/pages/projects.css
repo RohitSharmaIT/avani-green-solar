@@ -1,0 +1,35 @@
+.projects-page .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .projects-page .filter-row {
+    flex-wrap: nowrap;
+  }
+}
+
+.project-card {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.project-card-media {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .project-card {
+    padding: 14px;
+  }
+
+  .project-card-media {
+    aspect-ratio: 16 / 10 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .project-card h4 {
+    font-size: 15px !important;
+  }
+}

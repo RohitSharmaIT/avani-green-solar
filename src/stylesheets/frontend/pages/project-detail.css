@@ -1,0 +1,10 @@
+.project-detail-page .wrap {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .project-detail-page .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import Icon from '../components/common/Icon';
+import '../stylesheets/frontend/pages/about.css';
 
 export default function AboutPage() {
   const { settings } = useApp();
@@ -67,7 +68,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div>
+    <div className="about-page">
       {/* Hero Header Section */}
       <section className="section" style={{ paddingBottom: 36 }}>
         <div className="wrap">
@@ -318,6 +319,12 @@ export default function AboutPage() {
                     >
                       {settings.phone}
                     </a>
+                    <a
+                      href={`tel:${(settings.phone2 || '7879301745').replace(/[^0-9+]/g, '')}`}
+                      style={{ display: 'block', color: 'var(--leaf-dark)', fontSize: '15px', fontWeight: 600, textDecoration: 'none', marginTop: 4 }}
+                    >
+                      {settings.phone2 || '+91 78793 01745'}
+                    </a>
                   </div>
                 </div>
 
@@ -325,6 +332,18 @@ export default function AboutPage() {
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16 }}>
                   <div style={{ color: '#25D366', marginTop: 2 }}>
                     <Icon name="whatsapp" size={18} />
+                  </div>
+
+                  <div className="about-social-links" aria-label="Social media">
+                    {[
+                      ['socialInstagram', 'instagram', 'Instagram'],
+                      ['socialYoutube', 'youtube', 'YouTube'],
+                      ['socialLinkedin', 'linkedin', 'LinkedIn']
+                    ].map(([key, icon, label]) => settings[key] ? (
+                      <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                        <Icon name={icon} size={20} />
+                      </a>
+                    ) : null)}
                   </div>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '13.5px', color: 'var(--forest)', marginBottom: 2 }}>

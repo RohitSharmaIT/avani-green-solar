@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import Icon from './Icon';
 
 export default function Footer() {
   const { settings, openEnquiryModal } = useApp();
@@ -93,6 +94,7 @@ export default function Footer() {
             <div>
               <h4>Contact</h4>
               <a href={`tel:${settings.phone}`}>{settings.phone}</a>
+              <a href={`tel:${settings.phone2 || '7879301745'}`}>{settings.phone2 || '+91 78793 01745'}</a>
               <a href={`mailto:${settings.email}`}>{settings.email}</a>
               <span style={{ display: 'block', fontSize: '13.5px', color: '#b9ccc0', padding: '4px 0' }}>
                 {settings.address}
@@ -100,6 +102,17 @@ export default function Footer() {
               <span style={{ display: 'block', fontSize: '12.5px', color: '#829c8e', marginTop: 4 }}>
                 {settings.hours}
               </span>
+              <div className="footer-social-links" aria-label="Social media">
+                {[
+                  ['socialInstagram', 'instagram', 'Instagram'],
+                  ['socialYoutube', 'youtube', 'YouTube'],
+                  ['socialLinkedin', 'linkedin', 'LinkedIn']
+                ].map(([key, icon, label]) => settings[key] ? (
+                  <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                    <Icon name={icon} size={18} />
+                  </a>
+                ) : null)}
+              </div>
             </div>
           </div>
 

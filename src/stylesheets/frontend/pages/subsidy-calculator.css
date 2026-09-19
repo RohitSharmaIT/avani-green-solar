@@ -1,0 +1,20 @@
+.subsidy-calculator-page .card-simple {
+  width: 100%;
+}
+
+.subsidy-notice {
+  padding: 12px 14px;
+  border: 1px solid #f0c36a;
+  border-radius: 8px;
+  background: #fff7e2;
+  color: #7a4d00;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 640px) {
+  .subsidy-calculator-page .wrap {
+    padding-inline: 12px;
+  }
+}

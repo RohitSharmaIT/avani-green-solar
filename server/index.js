@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import { seedInitialData } from './seed/seedData.js';
+import { seedDemoContent } from './seed/demoContent.js';
 
 // Route imports
 import authRoutes from './routes/auth.routes.js';
@@ -17,6 +18,7 @@ import settingsRoutes from './routes/settings.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 import jobRoutes from './routes/jobRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
+import subsidyRuleRoutes from './routes/subsidyRule.routes.js';
 
 dotenv.config();
 
@@ -50,6 +52,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/subsidy-rules', subsidyRuleRoutes);
 
 // Error Handler
 app.use((err, req, res, _next) => {
@@ -65,6 +68,7 @@ async function startServer() {
   try {
     await connectDB();
     await seedInitialData();
+    await seedDemoContent();
 
     app.listen(PORT, () => {
       console.log(`[Avani Solar API] Running on http://localhost:${PORT}`);

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
 import ProjectCard from '../components/cards/ProjectCard';
+import '../stylesheets/frontend/pages/home.css';
+import '../stylesheets/frontend/pages/partners.css';
 import ReviewCard from '../components/cards/ReviewCard';
 
 export default function HomePage() {
@@ -18,7 +20,13 @@ export default function HomePage() {
   });
   const [reviewErrors, setReviewErrors] = useState({});
 
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 6);
+  const featuredProjects = [...projects]
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt || `${a.year || 0}-12-31`).getTime();
+      const dateB = new Date(b.createdAt || `${b.year || 0}-12-31`).getTime();
+      return dateB - dateA;
+    })
+    .slice(0, 3);
   const approvedReviews = reviews.filter((r) => r.status === 'APPROVED');
 
   const reasons = [
@@ -43,7 +51,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="hero">
         <div className="wrap hero-grid">
-          <div>
+          <div className="home-page hero-copy">
             <h1 style={{ marginTop: 0 }}>Power your future with clean solar energy</h1>
             <p className="lead">
               Reliable solar solutions for homes, businesses and industries across Madhya Pradesh — from engineering and net-metering to turnkey installation and after-sales support.
@@ -138,21 +146,22 @@ export default function HomePage() {
             <div className="eyebrow">How it works</div>
             <h2>How solar reduces your electricity bill</h2>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <div className="solar-workflow">
             {workflow.map((step, idx) => (
-              <React.Fragment key={idx}>
-                <div className="card-simple" style={{ minWidth: 160, textAlign: 'center', fontSize: '14px', fontWeight: 600 }}>
-                  {step}
+              <div className="solar-workflow-item" key={idx}>
+                <div className={`card-simple solar-workflow-step ${idx === workflow.length - 1 ? 'solar-workflow-last' : ''}`}>
+                  <span className="solar-workflow-number">{idx + 1}</span>
+                  <span className="solar-workflow-label">{step}</span>
                 </div>
                 {idx < workflow.length - 1 && (
-                  <div style={{ padding: '0 4px', color: 'var(--leaf-dark)', display: 'flex', alignItems: 'center' }}>
+                  <div className="solar-workflow-arrow">
                     <Icon name="arrow" size={18} />
                   </div>
                 )}
-              </React.Fragment>
+              </div>
             ))}
           </div>
-          <div style={{ marginTop: 28 }}>
+          <div className="solar-workflow-cta">
             <Link to="/solar-calculator" className="btn btn-primary">
               Calculate My Savings
             </Link>
@@ -241,6 +250,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Finance Partners Section — separate from the solar manufacturer section above */}
+      <section className="finance-partners-section section">
+        <div className="wrap finance-partners-heading">
+          <div className="eyebrow">Flexible solar financing</div>
+          <h2>Supported by trusted finance partners</h2>
+          <p>
+            Explore convenient financing options from our lending partners to make your solar transition easier.
+          </p>
+        </div>
+        <div className="finance-marquee" aria-label="Our finance partners">
+          <div className="finance-marquee-track">
+            {[1, 2, 3, 5, 1, 2, 3, 5].map((partner, index) => (
+              <div className="finance-logo-card" key={`finance-a-${index}`}>
+                <img src={`/images/finance-partners/partner${partner}.png`} alt={`Finance partner ${partner}`} />
+              </div>
+            ))}
+          </div>
+          <div className="finance-marquee-track" aria-hidden="true">
+            {[1, 2, 3, 5, 1, 2, 3, 5].map((partner, index) => (
+              <div className="finance-logo-card" key={`finance-b-${index}`}>
+                <img src={`/images/finance-partners/partner${partner}.png`} alt="" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* System Types */}
       <section className="section">
         <div className="wrap">
@@ -313,17 +349,6 @@ export default function HomePage() {
                 Verified customer installations across Madhya Pradesh approved by our team.
               </p>
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={() => setShowReviewModal(true)}
-              >
-                + Write a Review
-              </button>
-              <Link to="/reviews" className="btn btn-ghost btn-sm">
-                View All Reviews ({approvedReviews.length})
-              </Link>
-            </div>
           </div>
 
           <div className="cell-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', background: 'var(--sage)' }}>
@@ -334,6 +359,18 @@ export default function HomePage() {
             ) : (
               <div className="empty" style={{ background: '#fff' }}>No approved customer reviews yet. Be the first to share your experience!</div>
             )}
+          </div>
+
+          <div className="home-review-actions">
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => setShowReviewModal(true)}
+            >
+              + Write a Review
+            </button>
+            <Link to="/reviews" className="btn btn-ghost btn-sm">
+              View All Reviews ({approvedReviews.length})
+            </Link>
           </div>
         </div>
       </section>

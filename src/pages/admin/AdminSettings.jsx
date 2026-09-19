@@ -138,6 +138,28 @@ export default function AdminSettings() {
             <input name="email" type="email" value={form.email} onChange={handleChange} required />
           </div>
 
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="field">
+              <label>Additional Phone</label>
+              <input name="phone2" value={form.phone2 || ''} onChange={handleChange} placeholder="+91 78793 01745" required />
+            </div>
+            <div className="field">
+              <label>Instagram URL</label>
+              <input name="socialInstagram" type="url" value={form.socialInstagram || ''} onChange={handleChange} placeholder="https://instagram.com/..." />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="field">
+              <label>YouTube URL</label>
+              <input name="socialYoutube" type="url" value={form.socialYoutube || ''} onChange={handleChange} placeholder="https://youtube.com/..." />
+            </div>
+            <div className="field">
+              <label>LinkedIn URL</label>
+              <input name="socialLinkedin" type="url" value={form.socialLinkedin || ''} onChange={handleChange} placeholder="https://linkedin.com/..." />
+            </div>
+          </div>
+
           <div className="field">
             <label>Office Address</label>
             <input name="address" value={form.address} onChange={handleChange} required />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import '../stylesheets/frontend/pages/contact.css';
 import Icon from '../components/common/Icon';
 import SuccessModal from '../components/common/SuccessModal';
 
@@ -50,7 +51,7 @@ export default function ContactPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section contact-page">
       <SuccessModal
         isOpen={showSuccess}
         onClose={() => setShowSuccess(false)}
@@ -85,11 +86,28 @@ export default function ContactPage() {
                 {settings.phone}
               </a>
             </div>
+            <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Icon name="phone" size={18} />
+              <a href={`tel:${(settings.phone2 || '7879301745').replace(/[^0-9+]/g, '')}`} style={{ fontWeight: 600, color: 'var(--leaf-dark)' }}>
+                {settings.phone2 || '+91 78793 01745'}
+              </a>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <Icon name="mail" size={18} />
               <a href={`mailto:${settings.email}`} style={{ color: 'var(--ink-soft)' }}>
                 {settings.email}
               </a>
+            </div>
+            <div className="contact-social-links" aria-label="Social media">
+              {[
+                ['socialInstagram', 'instagram', 'Instagram'],
+                ['socialYoutube', 'youtube', 'YouTube'],
+                ['socialLinkedin', 'linkedin', 'LinkedIn']
+              ].map(([key, icon, label]) => settings[key] ? (
+                <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                  <Icon name={icon} size={20} />
+                </a>
+              ) : null)}
             </div>
           </div>
 
@@ -109,7 +127,7 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit} className="card-simple" noValidate>
+          <form onSubmit={handleSubmit} className="card-simple contact-form-card" noValidate>
             <h3 style={{ fontSize: '20px', marginBottom: 16 }}>Send us a Message</h3>
 
             <div className={`field ${errors.name ? 'invalid' : ''}`}>

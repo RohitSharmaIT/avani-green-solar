@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import ReviewCard from '../components/cards/ReviewCard';
+import '../stylesheets/frontend/pages/reviews.css';
 
 export default function ReviewsPage() {
   const { reviews, addReview } = useApp();
@@ -45,7 +46,7 @@ export default function ReviewsPage() {
   };
 
   return (
-    <section className="section">
+    <section className="section reviews-page">
       <div className="wrap">
         <div className="section-head">
           <div className="eyebrow">Client reviews</div>

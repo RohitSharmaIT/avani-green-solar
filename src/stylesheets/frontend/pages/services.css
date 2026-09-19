@@ -1,0 +1,9 @@
+.services-page .section-head {
+  max-width: 760px;
+}
+
+@media (max-width: 640px) {
+  .services-page .cell-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

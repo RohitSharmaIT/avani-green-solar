@@ -10,6 +10,10 @@ const settingsSchema = new mongoose.Schema(
       type: String,
       default: '+91 90000 00000'
     },
+    phone2: {
+      type: String,
+      default: '+91 78793 01745'
+    },
     whatsapp: {
       type: String,
       default: '919000000000'
@@ -18,6 +22,9 @@ const settingsSchema = new mongoose.Schema(
       type: String,
       default: 'hello@avanigreensolar.example'
     },
+    socialInstagram: { type: String, default: '' },
+    socialYoutube: { type: String, default: '' },
+    socialLinkedin: { type: String, default: '' },
     address: {
       type: String,
       default: 'Bhopal, Madhya Pradesh, India'

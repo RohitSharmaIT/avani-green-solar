@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
-
-const CATEGORIES = ['All', 'Subsidy', 'Installation', 'Technology', 'Finance', 'Tips'];
+import '../stylesheets/frontend/pages/blog.css';
 
 export default function BlogListPage() {
   const { blog } = useApp();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
+  const categories = ['All', ...new Set(blog.flatMap((article) => [article.childCat, article.cat]).filter(Boolean))];
   const filtered = blog.filter((article) => {
-    const matchCat = activeCategory === 'All' || article.cat === activeCategory;
+    const category = article.childCat || article.cat || '';
+    const matchCat = activeCategory === 'All' || category.trim().toLowerCase() === activeCategory.toLowerCase();
     const matchSearch =
       !searchQuery ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -19,11 +21,11 @@ export default function BlogListPage() {
     return matchCat && matchSearch;
   });
 
-  const featured = filtered[0];
-  const rest = filtered.slice(1);
+  const featured = filtered.find((article) => article.featured) || filtered[0];
+  const rest = filtered.filter((article) => article !== featured);
 
   return (
-    <div>
+    <div className="blog-page">
       {/* Hero Section */}
       <section
         style={{
@@ -39,7 +41,7 @@ export default function BlogListPage() {
 
         <div className="wrap">
           <div style={{ maxWidth: 640 }}>
-            <div
+            <div className="blog-featured-card"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -98,25 +100,16 @@ export default function BlogListPage() {
       {/* Category Filter Pills */}
       <section style={{ background: '#fff', borderBottom: '1px solid var(--line)', position: 'sticky', top: 0, zIndex: 50 }}>
         <div className="wrap" style={{ paddingTop: 16, paddingBottom: 16 }}>
-          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2 }}>
-            {CATEGORIES.map((cat) => (
+          <button type="button" className="filter-toggle btn btn-ghost btn-sm" onClick={() => setShowFilters((value) => !value)} aria-expanded={showFilters}>
+            {showFilters ? 'Hide filters' : 'Filter articles'}
+          </button>
+          <div className={`filter-row ${showFilters ? 'filters-open' : ''}`} role="tablist">
+            {categories.map((cat) => (
               <button
+                type="button"
                 key={cat}
+                className={`filter-chip ${activeCategory === cat ? 'active' : ''}`}
                 onClick={() => setActiveCategory(cat)}
-                style={{
-                  padding: '7px 16px',
-                  borderRadius: 99,
-                  border: '1.5px solid',
-                  borderColor: activeCategory === cat ? 'var(--forest)' : 'var(--line)',
-                  background: activeCategory === cat ? 'var(--forest)' : '#fff',
-                  color: activeCategory === cat ? '#fff' : 'var(--ink)',
-                  fontSize: '13.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s ease',
-                  fontFamily: 'inherit'
-                }}
               >
                 {cat}
               </button>
@@ -125,13 +118,14 @@ export default function BlogListPage() {
               {filtered.length} article{filtered.length !== 1 ? 's' : ''}
             </div>
           </div>
+          {(activeCategory !== 'All' || searchQuery) && <button type="button" className="btn btn-ghost btn-sm filter-clear" onClick={() => { setActiveCategory('All'); setSearchQuery(''); }}>Clear filters</button>}
         </div>
       </section>
 
       <section className="section" style={{ paddingTop: 48 }}>
         <div className="wrap">
           {filtered.length === 0 ? (
-            <div
+            <div className="blog-featured-media"
               style={{
                 textAlign: 'center',
                 padding: '80px 20px',
@@ -154,7 +148,7 @@ export default function BlogListPage() {
               {/* Featured Article (first one) */}
               {featured && (
                 <div style={{ marginBottom: 48 }}>
-                  <div
+                  <div className="blog-card-grid"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -167,7 +161,7 @@ export default function BlogListPage() {
                     }}
                   >
                     {/* Image */}
-                    <div
+                    <div className="blog-card"
                       style={{
                         aspectRatio: '16/10',
                         background: 'linear-gradient(135deg, #163A2E 0%, #2F7A4F 100%)',
@@ -190,14 +184,14 @@ export default function BlogListPage() {
                           ☀️
                         </div>
                       )}
-                      <div style={{
+                      {featured.featured && <div style={{
                         position: 'absolute', top: 14, left: 14,
                         background: 'var(--amber)', color: 'var(--forest-dark)',
                         fontSize: '11px', fontWeight: 800, textTransform: 'uppercase',
                         letterSpacing: '0.06em', padding: '4px 10px', borderRadius: 99
                       }}>
                         Featured
-                      </div>
+                      </div>}
                     </div>
 
                     {/* Content */}
@@ -234,7 +228,7 @@ export default function BlogListPage() {
                       {activeCategory === 'All' ? 'All Articles' : `${activeCategory} Articles`}
                     </h3>
                   </div>
-                  <div
+                  <div className="blog-card-media"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
