@@ -56,6 +56,25 @@ export default function Icon({ name, className = '', size = 20 }) {
         <path d="M9 9c0 3 2 5 6 6" strokeLinecap="round" />
       </>
     ),
+    instagram: (
+      <>
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </>
+    ),
+    youtube: (
+      <>
+        <path d="M21 8.2a2.7 2.7 0 0 0-1.9-1.9C17.4 6 12 6 12 6s-5.4 0-7.1.3A2.7 2.7 0 0 0 3 8.2 28 28 0 0 0 2.7 12 28 28 0 0 0 3 15.8a2.7 2.7 0 0 0 1.9 1.9C6.6 18 12 18 12 18s5.4 0 7.1-.3a2.7 2.7 0 0 0 1.9-1.9 28 28 0 0 0 .3-3.8 28 28 0 0 0-.3-3.8Z" />
+        <path d="m10 9 5 3-5 3V9Z" />
+      </>
+    ),
+    linkedin: (
+      <>
+        <path d="M5 8v11M5 5v.01M9 19v-6a4 4 0 0 1 8 0v6M9 12V8" />
+        <path d="M3 3h18v18H3z" />
+      </>
+    ),
     phone: <path d="M5 4h4l1.5 4.5-2 2a11 11 0 0 0 5 5l2-2L20 15v4a1 1 0 0 1-1 1C10.5 20 4 13.5 4 5a1 1 0 0 1 1-1Z" />,
     mail: (
       <>

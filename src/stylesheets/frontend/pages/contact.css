@@ -2,6 +2,31 @@
   align-items: start;
 }
 
+.contact-social-links,
+.about-social-links,
+.footer-social-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.contact-social-links a,
+.about-social-links a,
+.footer-social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leaf-dark);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.contact-social-links a:hover,
+.about-social-links a:hover,
+.footer-social-links a:hover {
+  color: var(--amber);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 640px) {
   .contact-page .wrap {
     grid-template-columns: 1fr !important;

@@ -120,6 +120,14 @@
     transition-duration: 0.65s;
   }
 
+  .solar-workflow-arrow.scroll-reveal {
+    transform: translateY(22px) rotate(90deg);
+  }
+
+  .solar-workflow-arrow.scroll-reveal.is-visible {
+    transform: rotate(90deg);
+  }
+
   .solar-workflow-item:nth-child(1) .solar-workflow-step {
     transition-delay: 0ms;
   }
@@ -185,7 +193,6 @@
     padding: 0;
     justify-content: center;
     color: var(--leaf-dark);
-    transform: rotate(90deg);
     margin: 0;
   }
 

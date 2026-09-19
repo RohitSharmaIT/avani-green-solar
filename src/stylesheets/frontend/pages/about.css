@@ -2,6 +2,23 @@
   max-width: 760px;
 }
 
+.about-social-links {
+  display: flex;
+  gap: 10px;
+  margin: 4px 0 18px 30px;
+}
+
+.about-social-links a {
+  display: inline-flex;
+  color: var(--leaf-dark);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.about-social-links a:hover {
+  color: var(--amber);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 640px) {
   .about-page .grid-cards {
     grid-template-columns: 1fr;

@@ -6,6 +6,7 @@ const subsidyRuleSchema = new mongoose.Schema(
     scheme: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
     customerType: { type: String, required: true, trim: true },
+    solarType: { type: String, default: 'On-grid', trim: true },
     min: { type: Number, required: true, min: 0 },
     max: { type: Number, required: true, min: 0 },
     type: { type: String, required: true, trim: true },

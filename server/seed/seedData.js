@@ -34,8 +34,12 @@ export async function seedInitialData() {
       await Settings.create({
         company: 'Avani Green Solar',
         phone: '+91 88271 86367',
+        phone2: '+91 78793 01745',
         whatsapp: '918827186367',
         email: 'support@avanigreensolar.com',
+        socialInstagram: 'https://www.instagram.com/',
+        socialYoutube: 'https://www.youtube.com/',
+        socialLinkedin: 'https://www.linkedin.com/',
         address: 'Basoda Naka, Near by Nehar, Bosoda road, Sironj, 464228',
         hours: 'Mon–Sat, 9:30 AM – 6:30 PM',
         defaultState: 'Madhya Pradesh',
@@ -43,6 +47,18 @@ export async function seedInitialData() {
         unitsPerKwPerMonth: 120,
         costPerKw: 55000
       });
+    } else {
+      await Settings.updateOne(
+        { _id: existingSettings._id },
+        {
+          $set: {
+            phone2: existingSettings.phone2 || '+91 78793 01745',
+            socialInstagram: existingSettings.socialInstagram || 'https://www.instagram.com/',
+            socialYoutube: existingSettings.socialYoutube || 'https://www.youtube.com/',
+            socialLinkedin: existingSettings.socialLinkedin || 'https://www.linkedin.com/'
+          }
+        }
+      );
     }
 
     // 3. Ensure subsidy rules exist
@@ -54,6 +70,7 @@ export async function seedInitialData() {
           scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
           state: 'All India',
           customerType: 'Residential',
+          solarType: 'On-grid',
           min: 0,
           max: 2,
           type: 'flat_per_kw',
@@ -65,6 +82,7 @@ export async function seedInitialData() {
           scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
           state: 'All India',
           customerType: 'Residential',
+          solarType: 'On-grid',
           min: 2,
           max: 3,
           type: 'flat_per_kw_additional',
@@ -76,6 +94,7 @@ export async function seedInitialData() {
           scheme: 'PM Surya Ghar (Muft Bijli Yojana)',
           state: 'All India',
           customerType: 'Residential',
+          solarType: 'On-grid',
           min: 3,
           max: 10,
           type: 'capped',
@@ -87,6 +106,7 @@ export async function seedInitialData() {
           scheme: 'State/Commercial Incentive (placeholder — configure)',
           state: 'Madhya Pradesh',
           customerType: 'Commercial',
+          solarType: 'On-grid',
           min: 0,
           max: 500,
           type: 'none_configured',

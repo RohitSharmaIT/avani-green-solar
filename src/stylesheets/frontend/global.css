@@ -708,6 +708,10 @@ footer.site a:hover {
   gap: 24px;
 }
 
+.footer-social-links a {
+  color: #b9ccc0;
+}
+
 @media (max-width: 900px) {
   .foot-grid {
     grid-template-columns: 1fr 1fr 1fr;

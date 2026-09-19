@@ -86,11 +86,28 @@ export default function ContactPage() {
                 {settings.phone}
               </a>
             </div>
+            <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Icon name="phone" size={18} />
+              <a href={`tel:${(settings.phone2 || '7879301745').replace(/[^0-9+]/g, '')}`} style={{ fontWeight: 600, color: 'var(--leaf-dark)' }}>
+                {settings.phone2 || '+91 78793 01745'}
+              </a>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <Icon name="mail" size={18} />
               <a href={`mailto:${settings.email}`} style={{ color: 'var(--ink-soft)' }}>
                 {settings.email}
               </a>
+            </div>
+            <div className="contact-social-links" aria-label="Social media">
+              {[
+                ['socialInstagram', 'instagram', 'Instagram'],
+                ['socialYoutube', 'youtube', 'YouTube'],
+                ['socialLinkedin', 'linkedin', 'LinkedIn']
+              ].map(([key, icon, label]) => settings[key] ? (
+                <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                  <Icon name={icon} size={20} />
+                </a>
+              ) : null)}
             </div>
           </div>
 
