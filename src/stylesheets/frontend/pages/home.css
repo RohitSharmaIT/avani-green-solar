@@ -113,6 +113,53 @@
     white-space: nowrap;
   }
 
+  .solar-workflow-step.scroll-reveal,
+  .solar-workflow-arrow.scroll-reveal,
+  .solar-workflow-cta.scroll-reveal {
+    transform: translateY(22px);
+    transition-duration: 0.65s;
+  }
+
+  .solar-workflow-item:nth-child(1) .solar-workflow-step {
+    transition-delay: 0ms;
+  }
+
+  .solar-workflow-item:nth-child(2) .solar-workflow-step {
+    transition-delay: 120ms;
+  }
+
+  .solar-workflow-item:nth-child(3) .solar-workflow-step {
+    transition-delay: 240ms;
+  }
+
+  .solar-workflow-item:nth-child(4) .solar-workflow-step {
+    transition-delay: 360ms;
+  }
+
+  .solar-workflow-item:nth-child(5) .solar-workflow-step {
+    transition-delay: 480ms;
+  }
+
+  .solar-workflow-item:nth-child(1) .solar-workflow-arrow {
+    transition-delay: 80ms;
+  }
+
+  .solar-workflow-item:nth-child(2) .solar-workflow-arrow {
+    transition-delay: 200ms;
+  }
+
+  .solar-workflow-item:nth-child(3) .solar-workflow-arrow {
+    transition-delay: 320ms;
+  }
+
+  .solar-workflow-item:nth-child(4) .solar-workflow-arrow {
+    transition-delay: 440ms;
+  }
+
+  .solar-workflow-cta {
+    transition-delay: 620ms;
+  }
+
   .solar-workflow-label {
     white-space: nowrap;
     overflow: hidden;

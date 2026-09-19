@@ -8,7 +8,9 @@ const REVEAL_SELECTOR = [
   '.grid-cards > *',
   '.blog-card-grid',
   '.blog-card-media > *',
-  '.section-head'
+  '.section-head',
+  '.solar-workflow-arrow',
+  '.solar-workflow-cta'
 ].join(', ');
 
 export default function ScrollReveal({ children }) {
